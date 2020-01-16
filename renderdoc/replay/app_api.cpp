@@ -31,6 +31,14 @@
 #include "hooks/hooks.h"
 #include "serialise/rdcfile.h"
 
+static void* GetWrappedDeviceForWindow(void *window)
+{
+	void *dev = nullptr;
+	RenderDoc::Inst().MatchClosestWindow(dev, window);
+
+	return dev;
+}
+
 static void SetFocusToggleKeys(RENDERDOC_InputButton *keys, int num)
 {
   RenderDoc::Inst().SetFocusKeys(keys, num);
@@ -245,22 +253,22 @@ int RENDERDOC_CC SetCaptureOptionF32(RENDERDOC_CaptureOption opt, float val);
 uint32_t RENDERDOC_CC GetCaptureOptionU32(RENDERDOC_CaptureOption opt);
 float RENDERDOC_CC GetCaptureOptionF32(RENDERDOC_CaptureOption opt);
 
-void RENDERDOC_CC GetAPIVersion_1_4_0(int *major, int *minor, int *patch)
+void RENDERDOC_CC GetAPIVersion_9_9_9(int *major, int *minor, int *patch)
 {
   if(major)
-    *major = 1;
+    *major = 9;
   if(minor)
-    *minor = 4;
+    *minor = 9;
   if(patch)
-    *patch = 0;
+    *patch = 9;
 }
 
-RENDERDOC_API_1_4_0 api_1_4_0;
-void Init_1_4_0()
+RENDERDOC_API_9_9_9 api_9_9_9;
+void Init_9_9_9()
 {
-  RENDERDOC_API_1_4_0 &api = api_1_4_0;
+  RENDERDOC_API_9_9_9 &api = api_9_9_9;
 
-  api.GetAPIVersion = &GetAPIVersion_1_4_0;
+  api.GetAPIVersion = &GetAPIVersion_9_9_9;
 
   api.SetCaptureOptionU32 = &SetCaptureOptionU32;
   api.SetCaptureOptionF32 = &SetCaptureOptionF32;
@@ -299,6 +307,8 @@ void Init_1_4_0()
   api.SetCaptureFileComments = &SetCaptureFileComments;
 
   api.DiscardFrameCapture = &DiscardFrameCapture;
+
+  api.GetWrappedDeviceForWindow = &GetWrappedDeviceForWindow;
 }
 
 extern "C" RENDERDOC_API int RENDERDOC_CC RENDERDOC_GetAPI(RENDERDOC_Version version,
@@ -325,15 +335,16 @@ extern "C" RENDERDOC_API int RENDERDOC_CC RENDERDOC_GetAPI(RENDERDOC_Version ver
     ret = 1;                                                       \
   }
 
-  API_VERSION_HANDLE(1_0_0, 1_4_0);
-  API_VERSION_HANDLE(1_0_1, 1_4_0);
-  API_VERSION_HANDLE(1_0_2, 1_4_0);
-  API_VERSION_HANDLE(1_1_0, 1_4_0);
-  API_VERSION_HANDLE(1_1_1, 1_4_0);
-  API_VERSION_HANDLE(1_1_2, 1_4_0);
-  API_VERSION_HANDLE(1_2_0, 1_4_0);
-  API_VERSION_HANDLE(1_3_0, 1_4_0);
-  API_VERSION_HANDLE(1_4_0, 1_4_0);
+  API_VERSION_HANDLE(1_0_0, 9_9_9);
+  API_VERSION_HANDLE(1_0_1, 9_9_9);
+  API_VERSION_HANDLE(1_0_2, 9_9_9);
+  API_VERSION_HANDLE(1_1_0, 9_9_9);
+  API_VERSION_HANDLE(1_1_1, 9_9_9);
+  API_VERSION_HANDLE(1_1_2, 9_9_9);
+  API_VERSION_HANDLE(1_2_0, 9_9_9);
+  API_VERSION_HANDLE(1_3_0, 9_9_9);
+  API_VERSION_HANDLE(1_4_0, 9_9_9);
+  API_VERSION_HANDLE(9_9_9, 9_9_9);
 
 #undef API_VERSION_HANDLE
 

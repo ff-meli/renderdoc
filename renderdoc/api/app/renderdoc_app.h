@@ -520,6 +520,8 @@ typedef uint32_t(RENDERDOC_CC *pRENDERDOC_EndFrameCapture)(RENDERDOC_DevicePoint
 typedef uint32_t(RENDERDOC_CC *pRENDERDOC_DiscardFrameCapture)(RENDERDOC_DevicePointer device,
                                                                RENDERDOC_WindowHandle wndHandle);
 
+typedef RENDERDOC_DevicePointer(RENDERDOC_CC *pRENDERDOC_GetWrappedDeviceForWindow)(RENDERDOC_WindowHandle window);
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // RenderDoc API versions
 //
@@ -543,6 +545,8 @@ typedef enum RENDERDOC_Version {
   eRENDERDOC_API_Version_1_2_0 = 10200,    // RENDERDOC_API_1_2_0 = 1 02 00
   eRENDERDOC_API_Version_1_3_0 = 10300,    // RENDERDOC_API_1_3_0 = 1 03 00
   eRENDERDOC_API_Version_1_4_0 = 10400,    // RENDERDOC_API_1_4_0 = 1 04 00
+
+  eRENDERDOC_API_Version_9_9_9 = 90909,	   // RENDERDOC_API_9_9_9 = 9 09 09
 } RENDERDOC_Version;
 
 // API version changelog:
@@ -568,8 +572,9 @@ typedef enum RENDERDOC_Version {
 //         0xdddddddd of uninitialised buffer contents.
 // 1.4.0 - Added feature: DiscardFrameCapture() to discard a frame capture in progress and stop
 //         capturing without saving anything to disk.
+// 9.9.9 - Hack to add GetWrappedDeviceForWindow() to the plugin API.
 
-typedef struct RENDERDOC_API_1_4_0
+typedef struct RENDERDOC_API_9_9_9
 {
   pRENDERDOC_GetAPIVersion GetAPIVersion;
 
@@ -635,16 +640,20 @@ typedef struct RENDERDOC_API_1_4_0
 
   // new function in 1.4.0
   pRENDERDOC_DiscardFrameCapture DiscardFrameCapture;
-} RENDERDOC_API_1_4_0;
 
-typedef RENDERDOC_API_1_4_0 RENDERDOC_API_1_0_0;
-typedef RENDERDOC_API_1_4_0 RENDERDOC_API_1_0_1;
-typedef RENDERDOC_API_1_4_0 RENDERDOC_API_1_0_2;
-typedef RENDERDOC_API_1_4_0 RENDERDOC_API_1_1_0;
-typedef RENDERDOC_API_1_4_0 RENDERDOC_API_1_1_1;
-typedef RENDERDOC_API_1_4_0 RENDERDOC_API_1_1_2;
-typedef RENDERDOC_API_1_4_0 RENDERDOC_API_1_2_0;
-typedef RENDERDOC_API_1_4_0 RENDERDOC_API_1_3_0;
+  // custom 9.9.9
+  pRENDERDOC_GetWrappedDeviceForWindow GetWrappedDeviceForWindow;
+} RENDERDOC_API_9_9_9;
+
+typedef RENDERDOC_API_9_9_9 RENDERDOC_API_1_0_0;
+typedef RENDERDOC_API_9_9_9 RENDERDOC_API_1_0_1;
+typedef RENDERDOC_API_9_9_9 RENDERDOC_API_1_0_2;
+typedef RENDERDOC_API_9_9_9 RENDERDOC_API_1_1_0;
+typedef RENDERDOC_API_9_9_9 RENDERDOC_API_1_1_1;
+typedef RENDERDOC_API_9_9_9 RENDERDOC_API_1_1_2;
+typedef RENDERDOC_API_9_9_9 RENDERDOC_API_1_2_0;
+typedef RENDERDOC_API_9_9_9 RENDERDOC_API_1_3_0;
+typedef RENDERDOC_API_9_9_9 RENDERDOC_API_1_4_0;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // RenderDoc API entry point
